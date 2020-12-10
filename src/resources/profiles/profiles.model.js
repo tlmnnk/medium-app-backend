@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const uuid = require('uuid')
 
-const userSchema = new mongoose.Schema({
+const profileSchema = new mongoose.Schema({
   bio: String,
   image: String,
   username: String,
@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema({
   },
 })
 
-const userModel = mongoose.model('User', userSchema)
+const profileModel = mongoose.model('Profile', profileSchema)
 
 module.exports = {
-  userModel,
+  profileModel,
 }
