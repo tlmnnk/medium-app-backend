@@ -1,7 +1,7 @@
 const express = require('express')
 const helmet = require('helmet')
 
-const userRouter = require('./resources/users/users.router')
+const profileRouter = require('./resources/profiles/profiles.router')
 
 const app = express()
 
@@ -16,12 +16,10 @@ app.use('/', (req, res, next) => {
   next()
 })
 
-app.use('/users', userRouter)
-
-app.listen(3000, () => {
-  console.log('App is runnin on', 3000, 'port')
-})
+app.use('/profiles', profileRouter)
 
 app.use((req, res) => {
   res.status(404).json('not found')
 })
+
+module.exports = app

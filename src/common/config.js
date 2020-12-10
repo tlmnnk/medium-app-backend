@@ -6,5 +6,5 @@ dotenv.config({
 })
 
 module.exports = {
-  MONGO_CONNECTIO_STRING: process.env.MONGO_CONNECTIO_STRING,
+  MONGO_CONNECTION_STRING: process.env.MONGO_CONNECTION_STRING,
 }

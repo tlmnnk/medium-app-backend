@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
-const { MONGO_CONNECTION_STRING } = require('../env')
+const { MONGO_CONNECTION_STRING } = require('../common/config')
 
 const connectToDB = (cb) => {
-  const db = mongoose.connect(MONGO_CONNECTION_STRING, {
+  mongoose.connect(MONGO_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true,
   })
+
+  const db = mongoose.connection
 
   db.on('error', () => {
     console.log('DB error...')
