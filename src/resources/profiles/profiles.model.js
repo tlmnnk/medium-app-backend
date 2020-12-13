@@ -32,6 +32,8 @@ const profileSchema = new mongoose.Schema({
   },
 })
 
+profileSchema.plugin(uniqueValidator, { message: 'is already taken' })
+
 profileSchema.methods.toResponse = function (user) {
   return {
     username: this.username,
@@ -42,13 +44,21 @@ profileSchema.methods.toResponse = function (user) {
   }
 }
 
+profileSchema.methods.toRegisterResponse = function (token) {
+  return {
+    username: this.username,
+    bio: this.bio,
+    email: this.email,
+    image: this.image,
+    token,
+  }
+}
+
 profileSchema.methods.isFollowing = function (id) {
   return this.following.some(
     (followId) => followId.toString() === id.toString()
   )
 }
-
-profileSchema.plugin(uniqueValidator, { message: 'is already taken' })
 
 const Profile = mongoose.model('Profile', profileSchema)
 
