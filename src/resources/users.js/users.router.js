@@ -4,15 +4,14 @@ const usersService = require('./users.service')
 
 // route - '/users'
 
-router.route('/').post((req, res) => {
+router.route('/user').post(async (req, res) => {
   const { username, email, password } = req.body.user
 
-  const user = usersService.register({ username, email, password })
-  // TODO:
-  // finish route
+  const user = await usersService.register({ username, email, password })
+  res.status(StatusCodes.OK).json({ user })
 })
 
-router.route('/login').post(async (req, res) => {
+router.route('/users/login').post(async (req, res) => {
   const { email, password } = req.body
 
   const user = await usersService.signToken(email, password)

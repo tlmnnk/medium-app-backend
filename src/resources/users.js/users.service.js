@@ -5,7 +5,8 @@ const { checkHashedPassword } = require('../../utils/hashHelper')
 
 const register = async ({ username, email, password }) => {
   const newUser = await repo.register({ username, email, password })
-  return newUser
+  const token = jwt.sign({ id: newUser._id, username }, JWT_SECRET_KEY)
+  return newUser.toRegisterResponse(token)
 }
 
 const signToken = async (email, password) => {
