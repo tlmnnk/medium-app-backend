@@ -19,12 +19,7 @@ const profileSchema = new mongoose.Schema({
     unique: true,
     required: [true, "can't be blank"],
   },
-  password: {
-    type: String,
-    lowercase: true,
-    unique: true,
-    required: [true, "can't be blank"],
-  },
+  password: String,
   email: String,
   _id: {
     type: String,
@@ -60,8 +55,6 @@ profileSchema.methods.isFollowing = function (id) {
   )
 }
 
-const Profile = mongoose.model('Profile', profileSchema)
+const Profile = mongoose.model('User', profileSchema)
 
-module.exports = {
-  Profile,
-}
+module.exports = Profile

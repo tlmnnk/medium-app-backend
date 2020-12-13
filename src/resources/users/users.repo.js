@@ -3,14 +3,14 @@ const Profile = require('../profiles/profiles.model')
 const { hashPassword } = require('../../utils/hashHelper')
 
 const findByKey = (key) => {
-  return User.findOne({ key })
+  return User.findOne({ email: key })
 }
 
 const register = async ({ username, email, password }) => {
   const newUser = new Profile()
   newUser.username = username
   newUser.email = email
-  newUser.password = hashPassword(password)
+  newUser.password = await hashPassword(password)
   await newUser.save()
   return newUser
 }

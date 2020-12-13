@@ -1,7 +1,7 @@
 const express = require('express')
 const helmet = require('helmet')
-
-const profileRouter = require('./resources/profiles/profiles.router')
+const usersRouter = require('./resources/users/users.router')
+const profilesRouter = require('./resources/profiles/profiles.router')
 
 const app = express()
 
@@ -16,7 +16,8 @@ app.use('/', (req, res, next) => {
   next()
 })
 
-app.use('/profiles', profileRouter)
+app.use('/api', usersRouter)
+app.use('/api/profiles', profilesRouter)
 
 app.use((req, res) => {
   res.status(404).json('not found')

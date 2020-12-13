@@ -4,8 +4,11 @@ const { JWT_SECRET_KEY } = require('../../common/config')
 const { checkHashedPassword } = require('../../utils/hashHelper')
 
 const getUser = async (username, currentUser) => {
-  const user = await repo.findByKey(username)
-  return currentUser ? user.toResponse(currentUser) : user.toResponse()
+  const user = await repo.findByUsername(username)
+  if (user) {
+    return user.toResponse(currentUser ? currentUser : null)
+  }
+  return null
 }
 
 const signToken = async (email, password) => {

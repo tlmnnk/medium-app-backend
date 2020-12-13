@@ -11,7 +11,6 @@ const register = async ({ username, email, password }) => {
 
 const signToken = async (email, password) => {
   const user = await repo.findByKey(email)
-
   if (!user) {
     return null
   }
@@ -21,7 +20,7 @@ const signToken = async (email, password) => {
   if (comparison) {
     const { _id, username } = user
     const token = jwt.sign({ id: _id, username }, JWT_SECRET_KEY)
-    return token
+    return user.toRegisterResponse(token)
   }
   return null
 }

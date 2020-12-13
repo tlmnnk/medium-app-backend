@@ -23,3 +23,5 @@ router.route('/users/login').post(async (req, res) => {
     res.status(StatusCodes.OK).json({ user })
   }
 })
+
+module.exports = router

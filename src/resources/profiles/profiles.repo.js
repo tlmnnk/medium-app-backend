@@ -1,9 +1,10 @@
 const User = require('./profiles.model')
 
-const findByKey = (key) => {
-  return User.findOne({ key })
+const findByUsername = async (key) => {
+  console.log('key-', key)
+  return await User.findOne({ username: key })
 }
 
 module.exports = {
-  findByKey,
+  findByUsername,
 }
