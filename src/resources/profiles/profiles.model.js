@@ -73,10 +73,15 @@ profileSchema.methods.unfollow = function (username) {
   return this.save()
 }
 
-
 profileSchema.methods.isFollowing = function (username) {
   return this.following.some(
     (followId) => followId.toString() === username.toString()
+  )
+}
+
+profileSchema.methods.isFavorite = function (id) {
+  return this.favorites.some(
+    (favoriteId) => favoriteId.toString() === id.toString()
   )
 }
 
