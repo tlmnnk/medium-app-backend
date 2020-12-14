@@ -2,6 +2,10 @@ const User = require('../profiles/profiles.model')
 const Profile = require('../profiles/profiles.model')
 const { hashPassword } = require('../../utils/hashHelper')
 
+const getUserById = (id) => {
+  return User.findById(id)
+}
+
 const findByKey = (key) => {
   return User.findOne({ email: key })
 }
@@ -18,4 +22,5 @@ const register = async ({ username, email, password }) => {
 module.exports = {
   findByKey,
   register,
+  getUserById,
 }

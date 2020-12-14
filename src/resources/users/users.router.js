@@ -1,8 +1,18 @@
 const router = require('express').Router()
 const { StatusCodes } = require('http-status-codes')
+const auth = require('../../utils/auth')
 const usersService = require('./users.service')
 
 // route - '/users'
+
+router.route('user').get(auth, async (req, res) => {
+  const currentUser = await usersService.getCurrentUser(req.user.id)
+  if (!currentUser) {
+    res.sendStatus(StatusCodes.UNAUTHORIZED)
+  } else {
+    res.status(StatusCodes.OK).json({ user: currentUser.toRegisterResponsea() })
+  }
+})
 
 router.route('/user').post(async (req, res) => {
   const { username, email, password } = req.body.user

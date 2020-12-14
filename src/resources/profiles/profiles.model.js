@@ -45,7 +45,7 @@ profileSchema.methods.toRegisterResponse = function (token) {
     bio: this.bio,
     email: this.email,
     image: this.image,
-    token,
+    token: token ? token : '',
   }
 }
 

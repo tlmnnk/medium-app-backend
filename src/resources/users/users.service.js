@@ -3,6 +3,10 @@ const repo = require('./users.repo')
 const { JWT_SECRET_KEY } = require('../../common/config')
 const { checkHashedPassword } = require('../../utils/hashHelper')
 
+const getCurrentUser = (id) => {
+  return repo.getUserById(id)
+}
+
 const register = async ({ username, email, password }) => {
   const newUser = await repo.register({ username, email, password })
   const token = jwt.sign({ id: newUser._id, username }, JWT_SECRET_KEY)
@@ -28,4 +32,5 @@ const signToken = async (email, password) => {
 module.exports = {
   signToken,
   register,
+  getCurrentUser,
 }
