@@ -5,12 +5,24 @@ const usersService = require('./users.service')
 
 // route - '/users'
 
-router.route('user').get(auth, async (req, res) => {
+router.route('/user').get(auth, async (req, res) => {
   const currentUser = await usersService.getCurrentUser(req.user.id)
   if (!currentUser) {
     res.sendStatus(StatusCodes.UNAUTHORIZED)
   } else {
-    res.status(StatusCodes.OK).json({ user: currentUser.toRegisterResponsea() })
+    res.status(StatusCodes.OK).json({ user: currentUser.toRegisterResponse() })
+  }
+})
+
+router.route('/user').put(auth, async (req, res) => {
+  console.log('req.user', req.user)
+  console.log('userInput', req.body.user)
+  if (!req.user) {
+    res.sendStatus(StatusCodes.UNAUTHORIZED)
+  } else {
+    const userInput = req.body.user
+    const updatedUser = await usersService.updateUser(req.user, userInput)
+    res.status(StatusCodes.OK).json({ user: updatedUser.toRegisterResponse() })
   }
 })
 

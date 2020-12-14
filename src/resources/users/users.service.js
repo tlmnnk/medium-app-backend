@@ -7,6 +7,14 @@ const getCurrentUser = (id) => {
   return repo.getUserById(id)
 }
 
+const updateUser = async (user, userInput) => {
+  const userToUpdate = await repo.getUserById(user.id)
+  if (!userToUpdate) {
+    return null
+  }
+  return userToUpdate.updateUser(userInput)
+}
+
 const register = async ({ username, email, password }) => {
   const newUser = await repo.register({ username, email, password })
   const token = jwt.sign({ id: newUser._id, username }, JWT_SECRET_KEY)
@@ -33,4 +41,5 @@ module.exports = {
   signToken,
   register,
   getCurrentUser,
+  updateUser,
 }

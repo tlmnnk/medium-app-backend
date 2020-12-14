@@ -1,6 +1,10 @@
-const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
 const uuid = require('uuid')
+const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
+const { JWT_SECRET_KEY } = require('../../common/config')
+const uniqueValidator = require('mongoose-unique-validator')
+
+const { hashPassword } = require('../../utils/hashHelper')
 
 const profileSchema = new mongoose.Schema({
   bio: {
@@ -40,13 +44,23 @@ profileSchema.methods.toResponse = function (user) {
 }
 
 profileSchema.methods.toRegisterResponse = function (token) {
+  const username = this.username
   return {
-    username: this.username,
+    username,
     bio: this.bio,
     email: this.email,
     image: this.image,
-    token: token ? token : '',
+    token: token ? token : jwt.sign({ id: this._id, username }, JWT_SECRET_KEY),
   }
+}
+
+profileSchema.methods.updateUser = function (userInput) {
+  userInput.username && (this.username = userInput.username)
+  userInput.email && (this.email = userInput.email)
+  userInput.image && (this.image = userInput.image)
+  userInput.bio && (this.bio = userInput.bio)
+  userInput.password && (this.password = hashPassword(userInput.password))
+  return this.save()
 }
 
 profileSchema.methods.isFollowing = function (id) {
