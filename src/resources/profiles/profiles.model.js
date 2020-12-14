@@ -16,7 +16,7 @@ const profileSchema = new mongoose.Schema({
     default: '',
   },
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
-  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  following: [{ type: String }],
   username: {
     type: String,
     lowercase: true,
@@ -39,7 +39,7 @@ profileSchema.methods.toResponse = function (user) {
     bio: this.bio,
     image:
       this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-    following: user ? user.isFollowing(this._id) : false,
+    following: user ? user.isFollowing(this.username) : false,
   }
 }
 
@@ -63,9 +63,14 @@ profileSchema.methods.updateUser = function (userInput) {
   return this.save()
 }
 
-profileSchema.methods.isFollowing = function (id) {
+profileSchema.methods.follow = function (username) {
+  this.following.push(username)
+  return this.save()
+}
+
+profileSchema.methods.isFollowing = function (username) {
   return this.following.some(
-    (followId) => followId.toString() === id.toString()
+    (followId) => followId.toString() === username.toString()
   )
 }
 
