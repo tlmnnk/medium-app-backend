@@ -68,6 +68,12 @@ profileSchema.methods.follow = function (username) {
   return this.save()
 }
 
+profileSchema.methods.unfollow = function (username) {
+  this.following.remove(username)
+  return this.save()
+}
+
+
 profileSchema.methods.isFollowing = function (username) {
   return this.following.some(
     (followId) => followId.toString() === username.toString()

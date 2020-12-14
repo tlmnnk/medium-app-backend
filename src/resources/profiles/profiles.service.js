@@ -30,9 +30,8 @@ const signToken = async (email, password) => {
 }
 
 const followUser = async (username, currentUser) => {
-  console.log(currentUser)
   const userToUpdate = await repo.findUserById(currentUser.id)
-  console.log(userToUpdate)
+
   if (userToUpdate.isFollowing(username)) {
     return null
   }
@@ -41,8 +40,19 @@ const followUser = async (username, currentUser) => {
   return userToFollow.toResponse(updatedUser)
 }
 
+const unfollowUser = async (username, currentUser) => {
+  const userToUpdate = await repo.findUserById(currentUser.id)
+  if (!userToUpdate.isFollowing(username)) {
+    return null
+  }
+  const updatedUser = await userToUpdate.unfollow(username)
+  const userToFollow = await repo.findByUsername(username)
+  return userToFollow.toResponse(updatedUser)
+}
+
 module.exports = {
   getUser,
   signToken,
   followUser,
+  unfollowUser,
 }

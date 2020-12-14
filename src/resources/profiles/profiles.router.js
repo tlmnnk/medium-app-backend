@@ -33,4 +33,18 @@ router.route('/:username/follow').post(auth, async (req, res) => {
   }
 })
 
+router.route('/:username/unfollow').delete(auth, async (req, res) => {
+  if (!req.user) {
+    res.sendStatus(StatusCodes.UNAUTHORIZED)
+    return
+  }
+
+  const user = await profilesService.unfollowUser(req.params.username, req.user)
+  if (user) {
+    res.status(StatusCodes.OK).json({ profile: user })
+  } else {
+    res.sendStatus(StatusCodes.BAD_REQUEST)
+  }
+})
+
 module.exports = router
