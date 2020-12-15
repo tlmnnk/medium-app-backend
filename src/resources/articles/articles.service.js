@@ -59,7 +59,16 @@ const addArticle = async (userId, article) => {
   return artilceToSend.toResponse(user)
 }
 
+const getArticle = async (req) => {
+  const [article, currentUser] = await Promise.all([
+    repo.findBySlug(req.params.article).populate('author'),
+    req.user ? repo.getUserById(req.user.id) : null,
+  ])
+  return article.toResponse(currentUser)
+}
+
 module.exports = {
   addArticle,
   getArticlesByQuery,
+  getArticle,
 }

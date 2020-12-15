@@ -19,6 +19,15 @@ router.route('/').post(auth, async (req, res) => {
   }
 })
 
+router.route('/:article').get(auth, async (req, res) => {
+  const article = await articlesService.getArticle(req)
+  if (!article) {
+    res.sendStatus(StatusCodes.NOT_FOUND)
+  } else {
+    res.status(StatusCodes.OK).json({ article })
+  }
+})
+
 router.route('/').get(auth, async (req, res) => {
   const articles = await articlesService.getArticlesByQuery(req)
 
