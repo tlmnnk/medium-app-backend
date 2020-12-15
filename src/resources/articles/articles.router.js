@@ -4,7 +4,6 @@ const articlesService = require('./articles.service')
 const router = require('express').Router()
 
 router.route('/').post(auth, async (req, res) => {
-  console.log('user', req.user);
   if (!req.user) {
     res.sendStatus(StatusCodes.UNAUTHORIZED)
   }
@@ -17,6 +16,16 @@ router.route('/').post(auth, async (req, res) => {
     res.status(StatusCodes.NOT_ACCEPTABLE)
   } else {
     res.status(StatusCodes.OK).json({ article })
+  }
+})
+
+router.route('/').get(auth, async (req, res) => {
+  const articles = await articlesService.getArticlesByQuery(req)
+
+  if (!articles) {
+    res.sendStatus(StatusCodes.NOT_FOUND)
+  } else {
+    res.status(StatusCodes.OK).json(articles)
   }
 })
 
