@@ -50,6 +50,14 @@ articlesSchema.methods.toResponse = function (user) {
   }
 }
 
+articlesSchema.methods.updateArticle = function (article) {
+  article.title && (this.title = article.title)
+  article.description && (this.description = article.description)
+  article.body && (this.body = article.body)
+  article.tagList && (this.tagList = article.tagList)
+  return this.save()
+}
+
 const Article = mongoose.model('Article', articlesSchema)
 
 module.exports = Article

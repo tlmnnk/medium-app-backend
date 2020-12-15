@@ -28,6 +28,18 @@ router.route('/:article').get(auth, async (req, res) => {
   }
 })
 
+router.route('/:article').put(auth, async (req, res) => {
+  if (!req.user) {
+    res.sendStatus(StatusCodes.FORBIDDEN)
+    return
+  }
+
+  const article = await articlesService.updateArticle(req)
+  if (!article) {
+    res.sendStatus(StatusCodes.BAD_REQUEST)
+  } else res.status(StatusCodes.OK).json({ article })
+})
+
 router.route('/').get(auth, async (req, res) => {
   const articles = await articlesService.getArticlesByQuery(req)
 

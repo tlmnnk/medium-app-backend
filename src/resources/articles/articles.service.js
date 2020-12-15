@@ -67,8 +67,22 @@ const getArticle = async (req) => {
   return article.toResponse(currentUser)
 }
 
+const updateArticle = async (req) => {
+  const [currentUser, articleToUpdate] = await Promise.all([
+    req.user ? repo.getUserById(req.user.id) : null,
+    repo.findBySlug(req.params.article).populate('author'),
+  ])
+  console.log('articleToUpdate ', articleToUpdate)
+  if (req.user.id !== articleToUpdate.author._id) {
+    return null
+  }
+  await articleToUpdate.updateArticle(req.body)
+  return articleToUpdate.toResponse(currentUser)
+}
+
 module.exports = {
   addArticle,
   getArticlesByQuery,
   getArticle,
+  updateArticle,
 }
