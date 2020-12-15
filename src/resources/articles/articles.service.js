@@ -46,6 +46,31 @@ const getArticlesByQuery = async (req) => {
   }
 }
 
+const getFeed = async (req) => {
+  const { limit: limitQ, offset: offsetQ } = req.query
+  const limit = limitQ || 20
+  const offset = offsetQ || 0
+
+  const user = await repo.getUserById(req.user.id)
+  if (user) {
+    return null
+  }
+
+  const [articles, articlesCount] = await Promise.all([
+    Article.find({ author: { $in: user.following } })
+      .limit(Number(limit))
+      .skip(Number(offset))
+      .populate('author')
+      .exec(),
+    Article.countDocuments({ author: { $in: user.following } }),
+  ])
+
+  return {
+    articles: articles.map((article) => article.toResponse(user)),
+    articlesCount,
+  }
+}
+
 const addArticle = async (userId, article) => {
   const newArticle = new Article(article)
   const user = await repo.getUserById(userId)
@@ -55,7 +80,6 @@ const addArticle = async (userId, article) => {
 
   newArticle.author = user
   const artilceToSend = await newArticle.save()
-  console.log('to send ', artilceToSend)
   return artilceToSend.toResponse(user)
 }
 
@@ -72,7 +96,6 @@ const updateArticle = async (req) => {
     req.user ? repo.getUserById(req.user.id) : null,
     repo.findBySlug(req.params.article).populate('author'),
   ])
-  console.log('articleToUpdate ', articleToUpdate)
   if (req.user.id !== articleToUpdate.author._id) {
     return null
   }
@@ -82,6 +105,7 @@ const updateArticle = async (req) => {
 
 module.exports = {
   addArticle,
+  getFeed,
   getArticlesByQuery,
   getArticle,
   updateArticle,
