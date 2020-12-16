@@ -103,10 +103,24 @@ const updateArticle = async (req) => {
   return articleToUpdate.toResponse(currentUser)
 }
 
+const favorite = async (req) => {
+  const [user, article] = await Promise.all([
+    repo.getUserById(req.user.id),
+    repo.findBySlug(req.params.article).populate('author'),
+  ])
+
+  await user.favorite(req.params.article)
+  await article.updateFavoriteCount()
+  return {
+    article: article.toResponse(user),
+  }
+}
+
 module.exports = {
   addArticle,
   getFeed,
   getArticlesByQuery,
   getArticle,
   updateArticle,
+  favorite,
 }

@@ -15,7 +15,7 @@ const profileSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
-  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+  favorites: [{ type: mongoose.Schema.Types.String, ref: 'Article' }],
   following: [{ type: String }],
   username: {
     type: String,
@@ -83,6 +83,14 @@ profileSchema.methods.isFavorite = function (id) {
   return this.favorites.some(
     (favoriteId) => favoriteId.toString() === id.toString()
   )
+}
+
+profileSchema.methods.favorite = function (id) {
+  if (this.favorites.indexOf(id) === -1) {
+    this.favorites.push(id)
+  }
+
+  return this.save()
 }
 
 const Profile = mongoose.model('User', profileSchema)

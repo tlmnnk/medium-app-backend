@@ -1,6 +1,7 @@
 const uuid = require('uuid')
 const slug = require('slug')
 const mongoose = require('mongoose')
+const User = require('../profiles/profiles.model')
 const uniqueValidator = require('mongoose-unique-validator')
 
 const articlesSchema = new mongoose.Schema(
@@ -44,10 +45,19 @@ articlesSchema.methods.toResponse = function (user) {
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
     tagList: this.tagList,
-    favorited: user ? user.isFavorite(this._id) : false,
+    favorited: user ? user.isFavorite(this.slug) : false,
     favoritesCount: this.favoritesCount,
     author: this.author.toResponse(user),
   }
+}
+
+articlesSchema.methods.updateFavoriteCount = async function () {
+  const article = this
+  this.favoritesCount = await User.countDocuments({
+    favorites: { $in: [article.slug] },
+  })
+
+  return this.save()
 }
 
 articlesSchema.methods.updateArticle = function (article) {

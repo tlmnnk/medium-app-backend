@@ -63,4 +63,18 @@ router.route('/:article').put(auth, async (req, res) => {
   } else res.status(StatusCodes.OK).json({ article })
 })
 
+router.route('/:article/favorite').post(auth, async (req, res) => {
+  if (!req.user) {
+    res.sendStatus(StatusCodes.UNAUTHORIZED)
+    return
+  }
+
+  const article = await articlesService.favorite(req)
+  if (!article) {
+    res.sendStatus(StatusCodes.FORBIDDEN)
+  } else {
+    res.status(StatusCodes.OK).json(article)
+  }
+})
+
 module.exports = router
