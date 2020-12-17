@@ -77,4 +77,18 @@ router.route('/:article/favorite').post(auth, async (req, res) => {
   }
 })
 
+router.route('/:article/favorite').delete(auth, async (req, res) => {
+  if (!req.user) {
+    res.sendStatus(StatusCodes.UNAUTHORIZED)
+    return
+  }
+
+  const article = await articlesService.unfavorite(req)
+  if (!article) {
+    res.sendStatus(StatusCodes.FORBIDDEN)
+  } else {
+    res.status(StatusCodes.OK).json(article)
+  }
+})
+
 module.exports = router

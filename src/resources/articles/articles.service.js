@@ -116,6 +116,19 @@ const favorite = async (req) => {
   }
 }
 
+const unfavorite = async (req) => {
+  const [user, article] = await Promise.all([
+    repo.getUserById(req.user.id),
+    repo.findBySlug(req.params.article).populate('author'),
+  ])
+
+  await user.unfavorite(article._id)
+  await article.updateFavoriteCount()
+  return {
+    article: article.toResponse(user),
+  }
+}
+
 module.exports = {
   addArticle,
   getFeed,
@@ -123,4 +136,5 @@ module.exports = {
   getArticle,
   updateArticle,
   favorite,
+  unfavorite,
 }

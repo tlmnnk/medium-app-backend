@@ -93,6 +93,11 @@ profileSchema.methods.favorite = function (id) {
   return this.save()
 }
 
+profileSchema.methods.unfavorite = function (id) {
+  this.favorites.remove(id)
+  return this.save()
+}
+
 const Profile = mongoose.model('User', profileSchema)
 
 module.exports = Profile
