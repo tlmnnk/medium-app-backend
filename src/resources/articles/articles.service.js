@@ -49,7 +49,7 @@ const getFeed = async (req) => {
   const offset = offsetQ || 0
 
   const user = await repo.getUserById(req.user.id)
-  if (user) {
+  if (!user) {
     return null
   }
 

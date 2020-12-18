@@ -30,13 +30,15 @@ const signToken = async (email, password) => {
 }
 
 const followUser = async (username, currentUser) => {
-  const userToUpdate = await repo.findUserById(currentUser.id)
+  const [userToUpdate, userToFollow] = await Promise.all([
+    repo.findUserById(currentUser.id),
+    repo.findByUsername(username),
+  ])
 
-  if (userToUpdate.isFollowing(username)) {
+  if (userToUpdate.isFollowing(userToFollow._id)) {
     return null
   }
-  const updatedUser = await userToUpdate.follow(username)
-  const userToFollow = await repo.findByUsername(username)
+  const updatedUser = await userToUpdate.follow(userToFollow._id)
   return userToFollow.toResponse(updatedUser)
 }
 
