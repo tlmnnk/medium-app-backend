@@ -3,11 +3,11 @@ const repo = require('./profiles.repo')
 const { JWT_SECRET_KEY } = require('../../common/config')
 const { checkHashedPassword } = require('../../utils/hashHelper')
 
-const getUser = async (username, currentUserId) => {
-  const user = await repo.findByUsername(username)
-  if (user) {
-    const currentUser = await repo.findUserById(currentUserId)
-    return user.toResponse(currentUser)
+const getUser = async (username, user) => {
+  const profile = await repo.findByUsername(username)
+  if (profile) {
+    const currentUser = user ? await repo.findUserById(user.id) : null
+    return profile.toResponse(currentUser)
   }
   return null
 }

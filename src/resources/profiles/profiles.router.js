@@ -6,7 +6,7 @@ const profilesService = require('./profiles.service')
 router.route('/:username').get(auth, async (req, res) => {
   const { username } = req.params
 
-  const user = await profilesService.getUser(username, req.user.id)
+  const user = await profilesService.getUser(username, req.user)
   if (!user) {
     res.status(StatusCodes.NOT_FOUND).json({ message: 'User not found' })
   } else {

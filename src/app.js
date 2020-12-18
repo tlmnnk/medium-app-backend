@@ -1,12 +1,19 @@
 const express = require('express')
 const helmet = require('helmet')
+const cors = require('cors')
 const usersRouter = require('./resources/users/users.router')
 const articlesRouter = require('./resources/articles/articles.router')
 const profilesRouter = require('./resources/profiles/profiles.router')
 
 const app = express()
 
+const corsOptions = {
+  origin: 'http://localhost:8080',
+  optionsSuccessStatus: 200,
+}
+
 app.use(helmet())
+app.use(cors(corsOptions))
 app.use(express.json())
 
 app.use('/', (req, res, next) => {
