@@ -6,10 +6,8 @@ const usersService = require('./users.service')
 // route - '/users'
 
 router.route('/user').get(auth, async (req, res) => {
-  const currentUser = await usersService.getCurrentUser(req.user.id)
-  if (!currentUser) {
-    res.sendStatus(StatusCodes.UNAUTHORIZED)
-  } else {
+  if (req.user) {
+    const currentUser = await usersService.getCurrentUser(req.user.id)
     res.status(StatusCodes.OK).json({ user: currentUser.toRegisterResponse() })
   }
 })

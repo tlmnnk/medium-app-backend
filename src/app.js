@@ -8,7 +8,7 @@ const profilesRouter = require('./resources/profiles/profiles.router')
 const app = express()
 
 const corsOptions = {
-  origin: 'http://localhost:8080',
+  origin: '*',
   optionsSuccessStatus: 200,
 }
 
