@@ -122,7 +122,7 @@ const unfavorite = async (req) => {
     repo.findBySlug(req.params.article).populate('author'),
   ])
 
-  await user.unfavorite(article._id)
+  await user.unfavorite(article.slug)
   await article.updateFavoriteCount()
   return {
     article: article.toResponse(user),
