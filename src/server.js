@@ -1,8 +1,9 @@
 const { connectToDB } = require('./db')
 const app = require('./app')
+const { PORT } = require('./common/config')
 
 connectToDB(() => {
-  app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000')
+  app.listen(PORT || 80, () => {
+    console.log('Server is running!')
   })
 })
