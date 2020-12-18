@@ -21,10 +21,7 @@ const getArticlesByQuery = async (req) => {
     findQuery.author = result[0]._id
   }
   if (result[1]) {
-    findQuery._id = { $in: result[1].favorites }
-  }
-  if (req.query.favorited) {
-    findQuery._id = { $in: [] }
+    findQuery.slug = { $in: result[1].favorites }
   }
 
   const findResult = await Promise.all([
