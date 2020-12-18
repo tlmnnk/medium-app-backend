@@ -26,7 +26,7 @@ const profileSchema = new mongoose.Schema({
   password: String,
   email: String,
   _id: {
-    type: String,
+    type: mongoose.Schema.Types.String,
     default: uuid,
   },
 })

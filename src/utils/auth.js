@@ -6,9 +6,8 @@ module.exports = (req, res, next) => {
 
   if (authHeader) {
     const tokenString = req.header('Authorization')
-
     const [type, token] = tokenString.split(' ')
-    if (type !== 'Bearer') {
+    if (!['Bearer', 'Token'].includes(type)) {
       res.status(401).send('Wrong auth schema---')
     } else {
       try {

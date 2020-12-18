@@ -34,7 +34,7 @@ router.route('/user').post(async (req, res) => {
 })
 
 router.route('/users/login').post(async (req, res) => {
-  const { email, password } = req.body
+  const { email, password } = req.body.user
 
   const user = await usersService.signToken(email, password)
   if (!user) {

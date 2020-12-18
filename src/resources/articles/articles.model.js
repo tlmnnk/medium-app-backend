@@ -12,7 +12,7 @@ const articlesSchema = new mongoose.Schema(
     slug: { type: String, lowercase: true, unique: true },
     favoritesCount: { type: Number, default: 0 },
     tagList: [{ type: String }],
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    author: { type: mongoose.Schema.Types.String, ref: 'User' },
     _id: {
       type: String,
       default: uuid,

@@ -18,7 +18,7 @@ const getArticlesByQuery = async (req) => {
       : null,
   ])
   if (result[0]) {
-    findQuery.author = result[0]
+    findQuery.author = result[0]._id
   }
   if (result[1]) {
     findQuery._id = { $in: result[1].favorites }
